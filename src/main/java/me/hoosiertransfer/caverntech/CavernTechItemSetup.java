@@ -162,7 +162,7 @@ public class CavernTechItemSetup {
                 null, null, null,
                 null, null, null
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.EXTREME_ALLOY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.REFINED_SOUL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 null, null, null
