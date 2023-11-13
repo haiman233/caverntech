@@ -10,6 +10,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.hoosiertransfer.caverntech.items.CavernTechItems;
+import me.hoosiertransfer.caverntech.machines.PressurizedCarbonPress;
+import me.hoosiertransfer.caverntech.machines.TestMachine;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +29,7 @@ public class CavernTechItemSetup {
 
     private static final ItemGroup machines = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "machines"), caverntech,
-            new CustomItemStack(Material.FURNACE_MINECART, "&cMachines"), 2
+            new CustomItemStack(Material.FURNACE, "&cMachines"), 2
     );
 
     private static final ItemGroup multiblocks = new SubItemGroup(
@@ -122,7 +124,7 @@ public class CavernTechItemSetup {
                 new ItemStack(Material.GLASS), null, new ItemStack(Material.GLASS),
                 SlimefunItems.STEEL_PLATE, new ItemStack(Material.SMOOTH_STONE_SLAB), SlimefunItems.STEEL_PLATE
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.EXTREME_ALLOY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.WATER_RESERVOIR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 new ItemStack(Material.WATER_BUCKET), CavernTechItems.EMPTY_RESERVOIR, null,
                 null, null, null,
                 null, null, null
@@ -147,25 +149,22 @@ public class CavernTechItemSetup {
                 CavernTechItems.BISMUTHPLATES, CavernTechItems.PLATINUM, CavernTechItems.BISMUTHPLATES,
                 SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.REINFORCED_PLATE, SlimefunItems.REINFORCED_ALLOY_INGOT
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.EXTREME_ALLOY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.MACHINE_FRAME, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 new ItemStack(Material.IRON_BLOCK), CavernTechItems.PLATINUM, new ItemStack(Material.IRON_BLOCK),
                 CavernTechItems.PLATINUM, CavernTechItems.MACHINEPLATING, CavernTechItems.PLATINUM,
                 new ItemStack(Material.IRON_BLOCK), CavernTechItems.PLATINUM, new ItemStack(Material.IRON_BLOCK)
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.EXTREME_ALLOY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-                CavernTechItems.TOUGH_ALLOY, CavernTechItems.HARD_CARBON_ALLOY, null,
-                null, null, null,
-                null, null, null
-        }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.SOUL_FRAGMENT, new RecipeType(new NamespacedKey(CavernTech.getInstance(), "soul_harvester"), CavernTechItems.SOUL_HARVESTER, ""), new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.SOUL_FRAGMENT, new RecipeType(new NamespacedKey(CavernTech.getInstance(), "soul_harvester"), CavernTechItems.SOUL_HARVESTER, "", "&7Generates 1 Soul Fragment", "&5&oevery 666 seconds."), new ItemStack[]{
                 null, null, null,
                 null, null, null,
                 null, null, null
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.REFINED_SOUL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new PressurizedCarbonPress(materials, CavernTechItems.REFINED_SOUL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 null, null, null
-        }).register(plugin);
+        }).setCapacity(128)
+                .setEnergyConsumption(1)
+                .setProcessingSpeed(1).register(plugin);
     }
 }
