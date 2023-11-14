@@ -6,12 +6,14 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.items.RadioactiveItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.hoosiertransfer.caverntech.items.CavernTechItems;
 import me.hoosiertransfer.caverntech.machines.PressurizedCarbonPress;
-import me.hoosiertransfer.caverntech.machines.TestMachine;
+import me.hoosiertransfer.caverntech.machines.SaltProducer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -114,7 +116,7 @@ public class CavernTechItemSetup {
                 new SlimefunItemStack(CavernTechItems.ELECTROLYTE_INGOT, 64), new SlimefunItemStack(CavernTechItems.TOUGH_ALLOY, 64), new SlimefunItemStack(CavernTechItems.EXTREME_ALLOY, 64),
                 new SlimefunItemStack(CavernTechItems.THERMOCONDUCTING_ALLOY, 64), new SlimefunItemStack(CavernTechItems.PLATINUM, 64), new SlimefunItemStack(CavernTechItems.SOULARIUM, 64)
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.RADIUM, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new RadioactiveItem(materials, Radioactivity.HIGH, CavernTechItems.RADIUM, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.NEPTUNIUM, CavernTechItems.ELECTROLYTE_INGOT, null,
                 null, null, null,
                 null, null, null
@@ -159,12 +161,27 @@ public class CavernTechItemSetup {
                 null, null, null,
                 null, null, null
         }).register(plugin);
-        new PressurizedCarbonPress(materials, CavernTechItems.REFINED_SOUL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.REFINED_SOUL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 CavernTechItems.SOUL_FRAGMENT, CavernTechItems.SOUL_FRAGMENT, null,
                 null, null, null
-        }).setCapacity(128)
-                .setEnergyConsumption(1)
-                .setProcessingSpeed(1).register(plugin);
+        }).register(plugin);
+        // Machines
+        new PressurizedCarbonPress(machines, CavernTechItems.PRESSURIZED_CARBON_PRESS, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                SlimefunItems.ELECTRO_MAGNET, SlimefunItems.CARBONADO_EDGED_FURNACE, SlimefunItems.ELECTRO_MAGNET,
+                SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.CARBON_PRESS, SlimefunItems.REINFORCED_ALLOY_INGOT,
+                SlimefunItems.CARBONADO, CavernTechItems.MACHINE_FRAME, SlimefunItems.CARBONADO
+        }).setCapacity(600)
+                .setEnergyConsumption(200)
+                .setProcessingSpeed(1)
+                .register(plugin);
+        new SaltProducer(machines, CavernTechItems.SALT_PRODUCER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                SlimefunItems.HEATING_COIL, new ItemStack(Material.CAULDRON), SlimefunItems.HEATING_COIL,
+                new ItemStack(Material.IRON_BLOCK), SlimefunItems.SALT, new ItemStack(Material.IRON_BLOCK),
+                new ItemStack(Material.IRON_BLOCK), CavernTechItems.MACHINE_MOTOR, new ItemStack(Material.IRON_BLOCK)
+        }).setCapacity(96)
+                .setEnergyConsumption(32)
+                .setProcessingSpeed(1)
+                .register(plugin);
     }
 }
