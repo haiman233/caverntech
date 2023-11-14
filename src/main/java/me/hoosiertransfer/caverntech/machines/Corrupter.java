@@ -30,7 +30,7 @@ public class Corrupter extends AContainer implements RecipeDisplayItem {
         registerRecipe(2, new ItemStack(Material.GRASS_BLOCK), new ItemStack(Material.PODZOL));
         registerRecipe(2, new ItemStack(Material.PODZOL), new ItemStack(Material.MYCELIUM));
         registerRecipe(2, new ItemStack(Material.STONE), new ItemStack(Material.BLACKSTONE));
-        registerRecipe(2, new ItemStack(Material.COD, 64), new ItemStack(Material.TROPICAL_FISH_BUCKET)); //TODO: Find out the time for this
+        registerRecipe(60, new ItemStack(Material.COD, 64), new ItemStack(Material.TROPICAL_FISH_BUCKET));
         registerRecipe(2, new ItemStack(Material.JUNGLE_LEAVES, 16), new ItemStack(Material.DIRT));
         registerRecipe(2, new ItemStack(Material.CHERRY_LEAVES, 16), new ItemStack(Material.DIRT));
         registerRecipe(2, new ItemStack(Material.DARK_OAK_LEAVES, 16), new ItemStack(Material.DIRT));
