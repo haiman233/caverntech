@@ -11,28 +11,51 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.machines.MachineProcessor;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.operations.CraftingOperation;
 import io.github.thebusybiscuit.slimefun4.implementation.operations.MiningOperation;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class IngotExtractor extends SlimefunItem implements RecipeDisplayItem, EnergyNetComponent, MachineProcessHolder<CraftingOperation> {
+public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, MachineProcessHolder<CraftingOperation> {
     private static final int[] BORDER = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 31, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
     private static final int[] BORDER_IN = { 9, 10, 11, 12, 18, 21, 27, 28, 29, 30 };
     private static final int[] BORDER_OUT = { 14, 15, 16, 17, 23, 26, 32, 33, 34, 35 };
 
-    protected final List<MachineRecipe> recipes = new ArrayList<>();
+    private final ItemStack[] ingots = new ItemStack[] {
+            SlimefunItems.ALUMINUM_INGOT,
+            SlimefunItems.GOLD_4K,
+            SlimefunItems.COPPER_INGOT,
+            SlimefunItems.TIN_INGOT,
+            SlimefunItems.ZINC_DUST,
+            SlimefunItems.MAGNESIUM_INGOT,
+            SlimefunItems.LEAD_INGOT,
+            SlimefunItems.SILVER_INGOT,
+            new ItemStack(Material.IRON_INGOT)
+    };
+
+    private static final ItemStack NO_ENERGY = new CustomItemStack(Material.RED_STAINED_GLASS_PANE, "&cNot enough energy!");
+    private static final ItemStack PROCESSING = new CustomItemStack(Material.GREEN_STAINED_GLASS_PANE, "&aGenerating...");
+    private static final ItemStack NO_ROOM = new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE, "&6Not enough room!");
     private final MachineProcessor<CraftingOperation> processor = new MachineProcessor<>(this);
 
     private int energyConsumedPerTick = -1;
@@ -102,6 +125,18 @@ public class IngotExtractor extends SlimefunItem implements RecipeDisplayItem, E
     }
 
     @Override
+    @Nonnull
+    public MachineProcessor<CraftingOperation> getMachineProcessor() {
+        return processor;
+    }
+
+    @Override
+    @Nonnull
+    public EnergyNetComponentType getEnergyComponentType() {
+        return EnergyNetComponentType.CONSUMER;
+    }
+
+    @Override
     public void register(@Nonnull SlimefunAddon addon) {
         this.addon = addon;
 
@@ -123,25 +158,55 @@ public class IngotExtractor extends SlimefunItem implements RecipeDisplayItem, E
         if (getCapacity() > 0 && getEnergyConsumption() > 0 && getSpeed() > 0) {
             super.register(addon);
         }
-
-//        registerDefaultRecipes();
     }
 
-    @Override
-    @Nonnull
-    public List<ItemStack> getDisplayRecipes() {
-        List<ItemStack> displayRecipes = new ArrayList<>(recipes.size() * 2);
-
-        for (MachineRecipe recipe : recipes) {
-            if (recipe.getInput().length != 1) {
-                continue;
-            }
-
-            displayRecipes.add(recipe.getInput()[0]);
-            displayRecipes.add(recipe.getOutput()[0]);
+    protected void constructMenu(BlockMenuPreset preset) {
+        for (int i : BORDER) {
+            preset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
+        }
+        for (int i : BORDER_IN) {
+            preset.addItem(i, new CustomItemStack(Material.BLUE_STAINED_GLASS_PANE, "&9Input"), ChestMenuUtils.getEmptyClickHandler());
+        }
+        for (int i : BORDER_OUT) {
+            preset.addItem(i, new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE, "&6Output"), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        return displayRecipes;
+        preset.addItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, "&8Idle."), ChestMenuUtils.getEmptyClickHandler());
     }
 
+    public void postRegister() {
+        new BlockMenuPreset(this.getId(), this.getItemName()) {
+            @Override
+            public void init() {
+                constructMenu(this);
+            }
+
+            @Override
+            public boolean canOpen(@Nonnull Block block, @Nonnull Player player) {
+                return Slimefun.getProtectionManager().hasPermission(player, block.getLocation(), Interaction.INTERACT_BLOCK);
+            }
+
+            @Override
+            public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
+                if (flow == ItemTransportFlow.INSERT) {
+                    return getInputSlots();
+                } else {
+                    return getOutputSlots();
+                }
+            }
+        };
+    }
+
+    private void start(Block b, BlockMenu inv) {
+        if (!inv.fits(new ItemStack(Material.COBBLESTONE), getInputSlots())) {
+                inv.replaceExistingItem(22, NO_ROOM);
+            return;
+        }
+//        processor.startOperation(b, new CraftingOperation(new ItemStack(Material.COBBLESTONE), 1));
+    }
+
+    public @Nonnull ItemStack getRandomDust() {
+        int index = ThreadLocalRandom.current().nextInt(ingots.length);
+        return ingots[index].clone();
+    }
 }

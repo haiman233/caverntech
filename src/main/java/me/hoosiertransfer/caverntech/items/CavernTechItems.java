@@ -1,6 +1,5 @@
 package me.hoosiertransfer.caverntech.items;
 
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
@@ -35,6 +34,6 @@ public class CavernTechItems {
     public static final SlimefunItemStack SALT_PRODUCER = new SlimefunItemStack("SALT_PRODUCER", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk0Y2M3MjVlM2VjNDJkOTc0NjQwNDMxODBiNmEyYTZiNmYwZGU4OGNkZjY0NmM2NDk0NTIwODM2YTQ4YThiNyJ9fX0", "&fSalt Shaker", "",  LoreBuilder.power(32, "/t"), LoreBuilder.power(96, " Buffer"));
     public static final SlimefunItemStack CORRUPTER = new SlimefunItemStack("CORRUPTER", Material.GILDED_BLACKSTONE, "&cCorrupter", "",  "&7 Corrupts blocks into a different state.", "", LoreBuilder.power(60, "/t"), LoreBuilder.power(180, " Buffer"));
     public static final SlimefunItemStack COBBLE_GEN = new SlimefunItemStack("COBBLE_GEN", Material.CHISELED_DEEPSLATE, "&8Cobble Generator", "", "&7What do you think it does?", "", LoreBuilder.power(48, "/t"), LoreBuilder.power(360, " Buffer"));
-
+    public static final SlimefunItemStack INGOTEXTRACTOR = new SlimefunItemStack("INGOTEXTRACTOR", Material.FURNACE, "&8Ingot Extractor", "&7Converts cobblestone into ingots", "", LoreBuilder.speed(10), LoreBuilder.power(48, "/t"));
     public static final SlimefunItemStack SOUL_HARVESTER = new SlimefunItemStack("SOUL_HARVESTER", Material.BLACK_TERRACOTTA, "&5Soul Harvester", "", "&7Generates 1 Soul Fragment", "&5&oevery 666 seconds.");
 }
