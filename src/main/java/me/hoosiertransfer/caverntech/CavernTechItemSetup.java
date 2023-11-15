@@ -13,6 +13,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.Unplaceabl
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.hoosiertransfer.caverntech.items.CavernTechItems;
 import me.hoosiertransfer.caverntech.machines.CobbleGen;
+import me.hoosiertransfer.caverntech.machines.IngotExtractor;
 import me.hoosiertransfer.caverntech.machines.PressurizedCarbonPress;
 import me.hoosiertransfer.caverntech.machines.SaltProducer;
 import org.bukkit.Material;
@@ -185,6 +186,14 @@ public class CavernTechItemSetup {
                 .setProcessingSpeed(1)
                 .register(plugin);
         new CobbleGen(machines, CavernTechItems.COBBLE_GEN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                null, new ItemStack(Material.DIAMOND_PICKAXE), null,
+                new ItemStack(Material.LAVA_BUCKET), SlimefunItems.PROGRAMMABLE_ANDROID_MINER, new ItemStack(Material.WATER_BUCKET),
+                SlimefunItems.ELECTRIC_MOTOR, CavernTechItems.MACHINEPLATING, SlimefunItems.ELECTRIC_MOTOR
+        }).setCapacity(360)
+                .setEnergyConsumption(48)
+                .setProcessingSpeed(1)
+                .register(plugin);
+        new IngotExtractor(machines, CavernTechItems.INGOTEXTRACTOR, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 null, new ItemStack(Material.DIAMOND_PICKAXE), null,
                 new ItemStack(Material.LAVA_BUCKET), SlimefunItems.PROGRAMMABLE_ANDROID_MINER, new ItemStack(Material.WATER_BUCKET),
                 SlimefunItems.ELECTRIC_MOTOR, CavernTechItems.MACHINEPLATING, SlimefunItems.ELECTRIC_MOTOR

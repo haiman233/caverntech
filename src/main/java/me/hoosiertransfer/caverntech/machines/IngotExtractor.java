@@ -8,7 +8,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
-import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.machines.MachineProcessor;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
@@ -16,12 +15,12 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.operations.CraftingOperation;
-import io.github.thebusybiscuit.slimefun4.implementation.operations.MiningOperation;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
+import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -32,8 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, MachineProcessHolder<CraftingOperation> {
@@ -63,8 +60,20 @@ public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, 
     private int processingSpeed = -1;
     public IngotExtractor(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
-
         addItemHandler(onBlockBreak());
+
+        addItemHandler(new BlockTicker() {
+
+            @Override
+            public void tick(Block b, SlimefunItem sf, me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config data) {
+                IngotExtractor.this.tick(b);
+            }
+
+            @Override
+            public boolean isSynchronized() {
+                return false;
+            }
+        });
     }
 
     protected BlockBreakHandler onBlockBreak() {
@@ -197,15 +206,60 @@ public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, 
         };
     }
 
-    private void start(Block b, BlockMenu inv) {
-        if (!inv.fits(new ItemStack(Material.COBBLESTONE), getInputSlots())) {
-                inv.replaceExistingItem(22, NO_ROOM);
-            return;
+    protected void tick(Block b) {
+        BlockMenu inv = BlockStorage.getInventory(b);
+        CraftingOperation currentOperation = processor.getOperation(b);
+
+        if (currentOperation != null) {
+            if (!currentOperation.isFinished()) {
+                if (getCharge(b.getLocation()) < getEnergyConsumption()) {
+                    inv.replaceExistingItem(22, NO_ENERGY);
+                    return;
+                }
+
+                removeCharge(b.getLocation(), getEnergyConsumption());
+                currentOperation.addProgress(getSpeed());
+            } else {
+                inv.replaceExistingItem(22, PROCESSING);
+
+                for (ItemStack output : currentOperation.getResults()) {
+                    inv.pushItem(output.clone(), getOutputSlots());
+                }
+
+                processor.endOperation(b);
+            }
+        } else {
+            MachineRecipe next = findNextRecipe(inv);
+
+            if (next != null) {
+                currentOperation = new CraftingOperation(next);
+                processor.startOperation(b, currentOperation);
+            }
         }
-//        processor.startOperation(b, new CraftingOperation(new ItemStack(Material.COBBLESTONE), 1));
     }
 
-    public @Nonnull ItemStack getRandomDust() {
+    protected MachineRecipe findNextRecipe(BlockMenu inv) {
+        int input_slot = -1;
+
+        for (int slot : getInputSlots()) {
+            if (SlimefunUtils.isItemSimilar(inv.getItemInSlot(slot), new ItemStack(Material.COBBLESTONE), true)) {
+                input_slot = slot;
+                break;
+            }
+        }
+        if (input_slot != -1) {
+            ItemStack output = getRandomIngot();
+            if (!inv.fits(output, getOutputSlots())) {
+                inv.replaceExistingItem(22, NO_ROOM);
+                return null;
+            }
+            inv.consumeItem(input_slot);
+            return new MachineRecipe(1, new ItemStack[]{new ItemStack(Material.COBBLESTONE)}, new ItemStack[] { getRandomIngot() });
+        }
+        return null;
+    }
+
+    public @Nonnull ItemStack getRandomIngot() {
         int index = ThreadLocalRandom.current().nextInt(ingots.length);
         return ingots[index].clone();
     }
