@@ -23,38 +23,38 @@ import org.bukkit.inventory.ItemStack;
 public class CavernTechItemSetup {
     private static final NestedItemGroup caverntech = new NestedItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "caverntech"),
-            new CustomItemStack(Material.END_CRYSTAL, "&6Cavern&9Tech")
+            new CustomItemStack(Material.END_CRYSTAL, "&6洞穴&9科技")
     );
 
     private static final ItemGroup materials = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "materials"), caverntech,
-            new CustomItemStack(Material.NETHERITE_INGOT, "&4Materials"), 1
+            new CustomItemStack(Material.NETHERITE_INGOT, "&4材料"), 1
     );
 
     private static final ItemGroup machines = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "machines"), caverntech,
-            new CustomItemStack(Material.FURNACE, "&cMachines"), 2
+            new CustomItemStack(Material.FURNACE, "&c机器"), 2
     );
 
     private static final ItemGroup multiblocks = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "multiblocks"), caverntech,
-            new CustomItemStack(Material.DISPENSER, "&6Multiblocks"), 3
+            new CustomItemStack(Material.DISPENSER, "&6多方块机器"), 3
     );
     private static final ItemGroup generators = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "generators"), caverntech,
-            new CustomItemStack(Material.DAYLIGHT_DETECTOR, "&eGenerators"), 4
+            new CustomItemStack(Material.DAYLIGHT_DETECTOR, "&e发电机"), 4
     );
     private static final ItemGroup chambers = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "chambers"), caverntech,
-            new CustomItemStack(Material.SPAWNER, "&2Chambers"), 5
+            new CustomItemStack(Material.SPAWNER, "&2武器"), 5
     );
     private static final ItemGroup magic = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "magic"), caverntech,
-            new CustomItemStack(Material.STICK, "&aMagic"), 6
+            new CustomItemStack(Material.STICK, "&a魔法"), 6
     );
     private static final ItemGroup gadgets = new SubItemGroup(
             new NamespacedKey(CavernTech.getInstance(), "gadgets"), caverntech,
-            new CustomItemStack(Material.FEATHER, "&bGadgets"), 7
+            new CustomItemStack(Material.FEATHER, "&b道具"), 7
     );
 
     public static void setup(CavernTech plugin) {
@@ -158,7 +158,7 @@ public class CavernTechItemSetup {
                 CavernTechItems.PLATINUM, CavernTechItems.MACHINEPLATING, CavernTechItems.PLATINUM,
                 new ItemStack(Material.IRON_BLOCK), CavernTechItems.PLATINUM, new ItemStack(Material.IRON_BLOCK)
         }).register(plugin);
-        new UnplaceableBlock(materials, CavernTechItems.SOUL_FRAGMENT, new RecipeType(new NamespacedKey(CavernTech.getInstance(), "soul_harvester"), CavernTechItems.SOUL_HARVESTER, "", "&7Generates 1 Soul Fragment", "&5&oevery 666 seconds."), new ItemStack[]{
+        new UnplaceableBlock(materials, CavernTechItems.SOUL_FRAGMENT, new RecipeType(new NamespacedKey(CavernTech.getInstance(), "soul_harvester"), CavernTechItems.SOUL_HARVESTER, "", "&7每生成一个灵魂碎片", "&5&o需666秒"), new ItemStack[]{
                 null, null, null,
                 null, null, null,
                 null, null, null

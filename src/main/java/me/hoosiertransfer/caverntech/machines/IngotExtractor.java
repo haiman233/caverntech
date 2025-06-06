@@ -1,5 +1,14 @@
 package me.hoosiertransfer.caverntech.machines;
 
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nonnull;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemState;
@@ -25,13 +34,6 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, MachineProcessHolder<CraftingOperation> {
     private static final int[] BORDER = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 31, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
@@ -50,9 +52,9 @@ public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, 
             new ItemStack(Material.IRON_INGOT)
     };
 
-    private static final ItemStack NO_ENERGY = new CustomItemStack(Material.RED_STAINED_GLASS_PANE, "&cNot enough energy!");
-    private static final ItemStack PROCESSING = new CustomItemStack(Material.GREEN_STAINED_GLASS_PANE, "&aGenerating...");
-    private static final ItemStack NO_ROOM = new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE, "&6Not enough room!");
+    private static final ItemStack NO_ENERGY = new CustomItemStack(Material.RED_STAINED_GLASS_PANE, "&c没有足够的能量!");
+    private static final ItemStack PROCESSING = new CustomItemStack(Material.GREEN_STAINED_GLASS_PANE, "&a正在生产...");
+    private static final ItemStack NO_ROOM = new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE, "&6没有足够的空间!");
     private final MachineProcessor<CraftingOperation> processor = new MachineProcessor<>(this);
 
     private int energyConsumedPerTick = -1;
@@ -107,7 +109,7 @@ public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, 
             this.energyCapacity = capacity;
             return this;
         } else {
-            throw new IllegalStateException("You cannot modify the capacity after the Item was registered.");
+            throw new IllegalStateException("你无法在物品注册后修改储电量");
         }
     }
 
@@ -150,18 +152,18 @@ public class IngotExtractor extends SlimefunItem implements EnergyNetComponent, 
         this.addon = addon;
 
         if (getCapacity() <= 0) {
-            warn("The capacity has not been configured correctly. The Item was disabled.");
-            warn("Make sure to call '" + getClass().getSimpleName() + "#setEnergyCapacity(...)' before registering!");
+            warn("储电量未被正确配置，该物品已被禁用");
+            warn("请确保 '" + getClass().getSimpleName() + "#setEnergyCapacity(...)' 在此之前注册!");
         }
 
         if (getEnergyConsumption() <= 0) {
-            warn("The energy consumption has not been configured correctly. The Item was disabled.");
-            warn("Make sure to call '" + getClass().getSimpleName() + "#setEnergyConsumption(...)' before registering!");
+            warn("能量消耗未被正确配置，该物品已被禁用");
+            warn("请确保 '" + getClass().getSimpleName() + "#setEnergyConsumption(...)' 在此之前注册!");
         }
 
         if (getSpeed() <= 0) {
-            warn("The processing speed has not been configured correctly. The Item was disabled.");
-            warn("Make sure to call '" + getClass().getSimpleName() + "#setProcessingSpeed(...)' before registering!");
+            warn("生产速度未被正确配置，该物品已被禁用");
+            warn("请确保 '" + getClass().getSimpleName() + "#setProcessingSpeed(...)' 在此之前注册!");
         }
 
         if (getCapacity() > 0 && getEnergyConsumption() > 0 && getSpeed() > 0) {
