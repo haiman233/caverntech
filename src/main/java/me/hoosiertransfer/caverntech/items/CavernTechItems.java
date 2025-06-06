@@ -24,10 +24,10 @@ public class CavernTechItems {
     public static final SlimefunItemStack EMPTY_RESERVOIR = new SlimefunItemStack("CAVERN_EMPTY_RESERVOIR", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYzOGY2OGI5MmUzYzU5YTgwMmFjMjNlM2IyY2U0ZTkyYjEzOGMxMTE4ZjI3OWI2ZTQwMDY2OTU4ZThmNzRmNyJ9fX0", "&b空储罐", "", "&7液体: &f空", "", "&9&o洞穴科技");
     public static final SlimefunItemStack WATER_RESERVOIR = new SlimefunItemStack("CAVERN_WATER_RESERVOIR", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2MyMmY2MTYwNjgzMjY1YjhmZWYxMTMzMTdjMThjZjQ0ZWRmMmEwNjZiNTZhOGM4ZmQzMjVmNmI5MjBhNWY4In19fQ", "&b储罐", "", "&7液体: &f水", "", "&9&o洞穴科技");
     public static final SlimefunItemStack LAVA_RESERVOIR = new SlimefunItemStack("CAVERN_LAVA_RESERVOIR", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTNlOTY4NTE1ODllMWZhODU0ZjA0ODRjMzBkNjM0ZmE0Njc0MDk2NmE2NmMwOTllMWM2NDIxOWMxMWNiYTdhNSJ9fX0", "&b储罐", "", "&7液体: &c岩浆", "", "&9&o洞穴科技");
-    public static final SlimefunItemStack BISMUTHPLATES = new SlimefunItemStack("CAVERN_BISMUTHPLATES", Material.NETHERITE_SCRAP, "&lBismuth Plates", "", "&9&o洞穴科技");
+    public static final SlimefunItemStack BISMUTHPLATES = new SlimefunItemStack("CAVERN_BISMUTHPLATES", Material.NETHERITE_SCRAP, "&l铋板", "", "&9&o洞穴科技");
     public static final SlimefunItemStack MACHINE_MOTOR = new SlimefunItemStack("CAVERN_MACHINE_MOTOR", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2IwNDMzZjFjMjI3OTYwOGY3YmQyY2VjZWI5OGNkMTc1Y2JhYWRjM2Y2Mjk5YWUzY2NhZTI1N2RjMjJhNTViMiJ9fX0", "&c机器马达", "&7机器组件", "", "&9&o洞穴科技");
-    public static final SlimefunItemStack MACHINEPLATING = new SlimefunItemStack("CAVERN_MACHINEPLATING", Material.PAPER, "&bMachine Plate", "&7Machine Component", "", "&9&o洞穴科技");
-    public static final SlimefunItemStack MACHINE_FRAME = new SlimefunItemStack("CAVERN_MACHINE_FRAME", Material.IRON_BLOCK, "&bMachine Frame", "&7Machine Component", "", "&9&o洞穴科技");
+    public static final SlimefunItemStack MACHINEPLATING = new SlimefunItemStack("CAVERN_MACHINEPLATING", Material.PAPER, "&b机械板", "&7机器组件", "", "&9&o洞穴科技");
+    public static final SlimefunItemStack MACHINE_FRAME = new SlimefunItemStack("CAVERN_MACHINE_FRAME", Material.IRON_BLOCK, "&b机械框架", "&7机器组件", "", "&9&o洞穴科技");
     public static final SlimefunItemStack SOUL_FRAGMENT = new SlimefunItemStack("CAVERN_SOUL_FRAGMENT", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjIwMWFlMWE4YTA0ZGY1MjY1NmY1ZTQ4MTNlMWZiY2Y5Nzg3N2RiYmZiYzQyNjhkMDQzMTZkNmY5Zjc1MyJ9fX0", "灵魂碎片", "", "&9&o洞穴科技");
     public static final SlimefunItemStack REFINED_SOUL = new SlimefunItemStack("CAVERN_REFINED_SOUL", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhjZWI4NjMxYWRkN2NiYjU2NWRjYjcwNWYxMjEyMzQ5Y2NjZDc1NTk2NWM0NmE5MjI4NTJjOWZkOTQ4YjRiYiJ9fX0", "精致的灵魂", "", "&9&o洞穴科技");
     // Machines
@@ -36,5 +36,5 @@ public class CavernTechItems {
     public static final SlimefunItemStack CORRUPTER = new SlimefunItemStack("CAVERN_CORRUPTER", Material.GILDED_BLACKSTONE, "&c腐坏机", "",  "&7将方块破坏成不同的状态。", "", LoreBuilder.power(60, "/t"), LoreBuilder.power(180, " 可储存"));
     public static final SlimefunItemStack COBBLE_GEN = new SlimefunItemStack("CAVERN_COBBLE_GEN", Material.CHISELED_DEEPSLATE, "&8圆石生成器", "", "&7你认为它有什么作用?", "", LoreBuilder.power(48, "/t"), LoreBuilder.power(360, " 可储存"));
     public static final SlimefunItemStack INGOTEXTRACTOR = new SlimefunItemStack("CAVERN_INGOTEXTRACTOR", Material.FURNACE, "&8铸锭提取机", "&7将圆石转化为金属锭", "", LoreBuilder.speed(10), LoreBuilder.power(48, "/t"));
-    public static final SlimefunItemStack SOUL_HARVESTER = new SlimefunItemStack("CAVERN_SOUL_HARVESTER", Material.BLACK_TERRACOTTA, "&5灵魂收割机", "", "&7每生产1个灵魂碎片", "&5&o需666秒");
+    public static final SlimefunItemStack SOUL_HARVESTER = new SlimefunItemStack("CAVERN_SOUL_HARVESTER", Material.BLACK_TERRACOTTA, "&5灵魂收割机", "", "&7每生产1个灵魂碎片", "&7需666秒");
 }
